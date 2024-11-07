@@ -1,0 +1,26 @@
+version: 2
+
+# Aliases to tables in snowflake
+# Namespace: Airbnb
+# Schema: Raw
+# Tables will be raw listings, raw hosts, raw reviews -> ta bort "raw"
+# Freshness - 
+sources:
+  - name: airbnb
+    schema: raw
+    tables:
+      - name: listings
+        identifier: raw_listings
+
+      - name: hosts
+        identifier: raw_hosts
+
+      - name: reviews
+        identifier: raw_reviews
+        loaded_at_field: date
+        freshness:
+          warn_after: {count: 1, period: hour}
+          error_after: {count: 24, period: hour}
+
+# If no new data less than one hour is find, will give warning
+# If no new data less than 25 hours, will give error
